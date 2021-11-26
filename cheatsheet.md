@@ -1,4 +1,6 @@
 # Cheatsheet for git
+## Table of contents 
+TODO
 ## Setup
 ### config
 To show configs list:
@@ -175,4 +177,42 @@ git clean -dn
 To remove untracked files:
 ```
 git clean -df
+```
+### stash
+Quite useful when dealing with unstaged changes, when get a stash, the basic flow maybe as follow:
+- git stash apply
+- git restore .
+
+Or
+- git stash pop
+- git stash
+
+To list all stash available in the stash's stack:
+```
+git stash list
+```
+To stash current unstaged changes and push it on top of the stash's stack:
+```
+git stash
+```
+To push the current stash to the top of the stash's stack, but with some message/comment:
+```
+git stash push -m "<stash-message>"
+```
+
+To apply the stash at the x'th position of the stash's stack, if not specified, x will default to 0, which is the top element, notice that this will not remove the stash:
+```
+git stash apply <x>
+```
+Similar to `stash apply`, but will pop the specified stash, if not specified, x will be 0:
+```
+git stash pop <x>
+```
+To remove some specific stash x:
+```
+git stash drop <x>
+```
+To clear the whole stash's stack:
+```
+git stash clear
 ```
