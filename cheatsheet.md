@@ -77,6 +77,10 @@ git reset --soft HEAD~<x>
 ```
 git reset --hard HEAD~<x>
 ```
+> To undo all commit since a specific commit:
+```
+git reset --hard <commit-hash-to-go-back-to>
+```
 ### restore
 Should be used for revert staged/unstaged instead of `checkout/reset`.
 
@@ -174,6 +178,15 @@ git merge <branch-name>
 ```
  The commits in the `feature` branch that is ahead of this branch will be brought all together into the `master` branch, that mean it will take all of the commits in `feature` branch and that's it, no new commits created
 
+ To undo `fast-forward` merge, we will use git reset x with number of x correspond to the number of commits added to `master` branch:
+```
+git reset --hard HEAD~<x>
+```
+Or
+```
+git reset --hard <commit-hash-to-go-back-to>
+```
+
 > To merge changes from other branch, but only merge and add those changes to staging area, not commits:
 ```
 git merge --squash <branch-name>
@@ -194,12 +207,33 @@ To undo `recursive` merge, only a reset hard 1 level is requrired:
 ```
 git reset --hard HEAD~1
 ```
+Or
+```
+git reset --hard <commit-hash-to-go-back-to>
+```
 > Similarly, to merge but not added any commmits from the other branch, instead only do merge and stages such changes:
 ```
 git merge --squash <branch-name>
 ```
 
+### rebase
+Instead of `recursive` merge, which will create a merge commit, we can use `rebase` when there are changes added in both `master` branch and `feature` branch.
 
+`Rebase` is an operation of re-basing commits in `feature` branch from the latest commit in `master` branch, instead of the commit where this branch derivied from initially, this won't create a `merge-commit`.
+
+`Rebase` will rewrite commits history and try to create a straght line in commits visuallization, this results in easy merging with `fast-forward` merge thereafter.
+
+`Rebase` will create new commits, destroy old commits (with same changes of course), so one should not use rebase on a shared commits (with other people). Generally, rebasing should be used locally or when you know that no one will use these commits.
+
+> To rebase the current branch to another branch:
+```
+git rebase <branch-to-rebase-to>
+```
+This operation usually followed by switch back to the `master` branch and perform a `fast-forward` merge:
+```
+git switch master
+git merge feature
+```
 ### clean
 >To see which files will be removed when running `-df`, this should be run first:
 ```
@@ -259,3 +293,7 @@ This command will display a list of hashes of recent changes, and can be used in
 git checkout <hash> # use suitable commit hash 
 git switch -c <new-branch name> # create new branch to retain this commit
 ```
+Or we can `reset` to undo all commits since that commit:
+```
+git reset --hard <commit-hash-to-go-to>
+``` 
